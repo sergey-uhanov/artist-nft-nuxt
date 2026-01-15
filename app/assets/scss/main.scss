@@ -1,0 +1,19 @@
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+@use 'base/reset';
+@use 'base/fonts';
+@use 'theme';
+
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+
+}
+
+[class$="container"] {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
