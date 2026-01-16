@@ -1,8 +1,11 @@
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import * as path from "node:path";
 export default defineNuxtConfig({
+
 
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
-    modules: ['@nuxt/eslint', '@nuxt/ui', 'nuxt-auth-utils', '@nuxtjs/i18n', '@pinia/nuxt',],
+    modules: ['@nuxt/eslint', 'nuxt-auth-utils', '@nuxtjs/i18n', '@pinia/nuxt',],
     css: ['~/assets/scss/main.scss'],
     vite: {
         css: {
@@ -15,6 +18,13 @@ export default defineNuxtConfig({
                 }
             }
         },
+        plugins: [
+            createSvgIconsPlugin({
+                iconDirs:  [path.resolve(process.cwd(),'app/assets/icons')],
+                symbolId: 'icon-[name]',
+                svgoOptions: true
+            })
+        ]
     },
     vue: {
         compilerOptions: {
@@ -45,7 +55,10 @@ export default defineNuxtConfig({
         locales: [
             {code: 'en', file: 'en/common.json', language: 'English'},
             {code: 'ru', file: 'ru/common.json', language: 'Русский'},
-            {code: 'ua', file: 'ua/common.json', language: 'Українська'}
+            {code: 'ua', file: 'ua/common.json', language: 'Українська'},
+            {code: 'en', file: 'en/auth.json', language: 'English'},
+            {code: 'ru', file: 'ru/auth.json', language: 'Русский'},
+            {code: 'ua', file: 'ua/auth.json', language: 'Українська'}
         ]
     },
     nitro: {
