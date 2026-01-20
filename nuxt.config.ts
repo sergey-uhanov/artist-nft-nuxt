@@ -1,8 +1,13 @@
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import {createSvgIconsPlugin} from 'vite-plugin-svg-icons'
 import * as path from "node:path";
+
 export default defineNuxtConfig({
-
-
+    app: {
+        pageTransition: {
+            name: 'page',
+            mode: 'out-in'
+        }
+    },
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
     modules: ['@nuxt/eslint', 'nuxt-auth-utils', '@nuxtjs/i18n', '@pinia/nuxt',],
@@ -20,7 +25,7 @@ export default defineNuxtConfig({
         },
         plugins: [
             createSvgIconsPlugin({
-                iconDirs:  [path.resolve(process.cwd(),'app/assets/icons')],
+                iconDirs: [path.resolve(process.cwd(), 'app/assets/icons')],
                 symbolId: 'icon-[name]',
                 svgoOptions: true
             })

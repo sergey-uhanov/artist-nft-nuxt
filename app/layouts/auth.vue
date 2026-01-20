@@ -15,19 +15,21 @@ function onLangChange() {
 </script>
 
 <template>
-<header class="header-auth">
-  <BaseSelect
-      v-model="activeLang"
-      :items="languages"
-      variant="outlined"
-      @change="onLangChange"
-  />
-  <div class="switcher-wrapper">
-    <ThemeSwitcher/>
-  </div>
-</header>
+<div>
+  <header class="header-auth">
+    <BaseSelect
+        v-model="activeLang"
+        :items="languages"
+        variant="outlined"
+        @change="onLangChange"
+    />
+    <div class="switcher-wrapper">
+      <ThemeSwitcher/>
+    </div>
+  </header>
 
   <slot/>
+</div>
 
 </template>
 
@@ -43,4 +45,5 @@ function onLangChange() {
 .switcher-wrapper {
   width: 30px;
 }
+
 </style>

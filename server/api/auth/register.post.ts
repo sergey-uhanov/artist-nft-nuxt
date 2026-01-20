@@ -1,4 +1,5 @@
-import { z } from 'zod/v4'
+import {z} from 'zod/v4'
+import {regSchema} from "#shared/validation/registration.schema";
 
 const registerSchema = z.object({
     email: z.email('Invalid email'),
@@ -7,15 +8,18 @@ const registerSchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
-    const body = await readValidatedBody(event, registerSchema.parse)
+
+    const body = await readValidatedBody(event, regSchema.parse)
 
     const hashedPassword = await hashPassword(body.password)
+
 
     const user = await prisma.user.create({
         data: {
             name: body.name,
             email: body.email,
-            passwordHash: hashedPassword
+            password: hashedPassword,
+            role: body.role,
         },
     })
 

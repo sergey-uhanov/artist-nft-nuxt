@@ -4,6 +4,7 @@ import BaseButton from "~/components/ui/BaseButton.vue";
 import BaseTextInput from "~/components/ui/BaseTextInput.vue";
 import {type LoginForm, loginSchema, parseZodErrors} from '@@/shared/validation/auth.schema'
 import Toast from "~/components/common/Toast.vue";
+import type {NuxtError} from "#app";
 
 
 definePageMeta({
@@ -74,16 +75,16 @@ async function onLogin() {
       }
     })
 
-    if (!response.success) {
-      throw new Error("login failed")
-    }
-
-
     navigateTo('/')
 
   } catch (e) {
 
-    toastStore.show(e.statusMessage, 'error', 4000)
+    const err = e as NuxtError<{ data: { code: string } }>
+    const code = err.data?.data?.code
+
+    if (code) {
+      toastStore.show(t(`errors.${code}`), 'error', 4000)
+    }
   } finally {
     loading.value = false
   }
@@ -91,73 +92,79 @@ async function onLogin() {
 </script>
 
 <template>
-  <form @submit="onLogin" class="login-form">
-    <SvgIcon name="logo" width="161" height="46" class="login-form__login-icon"/>
-    <h1 class="login-form__title">{{ $t('authorization') }}</h1>
+  <div class="">
+    <form @submit="onLogin" class="login-form">
+      <SvgIcon name="logo" width="161" height="46" class="login-form__login-icon"/>
+      <h1 class="login-form__title">{{ $t('authorization') }}</h1>
 
-    <div class="login-form__btn-wrapper">
-      <BaseButton variant="primary">
-        {{ $t('login') }}
-      </BaseButton>
-
-
-      <NuxtLink :to="localePath('/auth/register')">
-        <BaseButton variant="ghost">
-          {{ $t('registr') }}
+      <div class="login-form__btn-wrapper">
+        <BaseButton variant="primary">
+          {{ $t('login') }}
         </BaseButton>
-      </NuxtLink>
-    </div>
 
-    <div class="login-form__social-wrapper">
-      <BaseButton variant="social-login" class="login-form__social-btn">
-        <SvgIcon name="google" width="20" height="20" class="login-form__social-icon"/>
-        {{ $t('loginWithGoogle') }}
+
+        <NuxtLink :to="localePath('/auth/register')">
+          <BaseButton variant="ghost">
+            {{ $t('registr') }}
+          </BaseButton>
+        </NuxtLink>
+      </div>
+
+      <div class="login-form__social-wrapper">
+        <NuxtLink class="login-form__social-link" to="/oauth/google" external>
+          <BaseButton variant="social-login" class="login-form__social-btn">
+            <SvgIcon name="google" width="20" height="20" class="login-form__social-icon"/>
+            {{ $t('loginWithGoogle') }}
+          </BaseButton>
+        </NuxtLink>
+        <NuxtLink to="/oauth/github" external>
+          <BaseButton variant="social-login" class="login-form__social-btn">
+            <SvgIcon name="github" width="20" height="20" class="login-form__social-icon"/>
+            {{ $t('loginWithGitHub') }}
+          </BaseButton>
+        </NuxtLink>
+      </div>
+
+      <BaseTextInput
+          @click.prevent=""
+          v-model="loginData.email"
+          :label="$t('email')"
+          :placeholder="$t('placeholders.email')"
+          type="email"
+          fullWidth
+          @blur="validateField('email')"
+          @input="errors.email? validateField('password'): null"
+          :error="errors.email"
+          class="login-form__email-input"
+      />
+
+      <BaseTextInput
+          v-model="loginData.password"
+          :label="$t('password')"
+          type="password"
+          :placeholder="$t('placeholders.password')"
+          :error="errors.password"
+          @blur="validateField('password')"
+          @input="errors.password? validateField('password'): null"
+          fullWidth
+          class="login-form__password-input"
+      />
+      <BaseButton :disabled="loading" @click="onLogin" type="submit" variant="primary" full-width>
+        {{ $t('submit') }}
       </BaseButton>
-      <BaseButton variant="social-login" class="login-form__social-btn">
-        <SvgIcon name="github" width="20" height="20" class="login-form__social-icon"/>
-        {{ $t('loginWithGitHub') }}
-      </BaseButton>
-    </div>
 
-    <BaseTextInput
-        @click.prevent=""
-        v-model="loginData.email"
-        :label="$t('email')"
-        :placeholder="$t('placeholders.email')"
-        type="email"
-        fullWidth
-        @blur="validateField('email')"
-        @input="errors.email? validateField('password'): null"
-        :error="errors.email"
-        class="login-form__email-input"
-    />
+      <div class="login-form__reset-password-wrapper">
+        <p class="login-form__reset-password">
+          {{ $t('resetPassword') }}
+        </p>
 
-    <BaseTextInput
-        v-model="loginData.password"
-        :label="$t('password')"
-        type="password"
-        :placeholder="$t('placeholders.password')"
-        :error="errors.password"
-        @blur="validateField('password')"
-        @input="errors.password? validateField('password'): null"
-        fullWidth
-        class="login-form__password-input"
-    />
-    <BaseButton @click="onLogin" type="submit" variant="primary" full-width>
-      {{ $t('submit') }}
-    </BaseButton>
-
-    <div class="login-form__reset-password-wrapper">
-      <p class="login-form__reset-password">
-        {{ $t('resetPassword') }}
-      </p>
-
-      <NuxtLink class="login-form__reset-password-link" :to="localePath('/auth/recover-password')">
-        {{ $t('resetPasswordLink') }}
-      </NuxtLink>
-    </div>
-  </form>
-  <Toast />
+        <NuxtLink class="login-form__reset-password-link" :to="localePath('/auth/recover-password')">
+          {{ $t('resetPasswordLink') }}
+        </NuxtLink>
+      </div>
+    </form>
+    <Toast/>
+  </div>
 </template>
 
 <style lang="scss">

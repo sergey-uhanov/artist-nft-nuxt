@@ -12,10 +12,12 @@ export default defineEventHandler(async (event) => {
             email: body.email,
         }
     })
+
     if (!user) {
         throw createError({
             status: 401,
             message: 'Unauthorized',
+            data: { code: 'AUTH_USER_NOT_FOUND' }
         })
     }
 
@@ -24,6 +26,7 @@ export default defineEventHandler(async (event) => {
         throw createError({
             status: 401,
             message: 'invalid password',
+            data: { code: 'AUTH_USER_NOT_FOUND' }
         })
     }
     await setUserSession(event, {

@@ -94,6 +94,7 @@ const buttonClasses = computed(() => [
     -webkit-text-fill-color: transparent;
     font-weight: 700;
     font-size: 14px;
+    width: 100%;
   }
 
   &--secondary {
