@@ -3,7 +3,7 @@ import {computed} from 'vue'
 
 interface Props {
   fullWidth?: boolean
-  variant?: 'primary' | 'secondary' | 'ghost' | 'transparent'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'transparent'| 'social-login'
   disabled?: boolean
 }
 
@@ -82,6 +82,18 @@ const buttonClasses = computed(() => [
   &--primary {
     --btn-bg: var(--background-primary-button);
     --btn-text: var(--background);
+  }
+
+  &--social-login {
+    --btn-bg: var(--background-secondary-button);
+    --btn-text: var(--background);
+    line-height: 1.42;
+    background: var(--background-primary-button);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-size: 14px;
   }
 
   &--secondary {

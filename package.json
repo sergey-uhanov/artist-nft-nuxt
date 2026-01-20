@@ -16,6 +16,7 @@
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "eslint": "^9.39.2",
+    "nanoid": "^5.1.6",
     "nuxt": "^4.2.2",
     "nuxt-auth-utils": "^0.5.26",
     "pg": "^8.16.3",

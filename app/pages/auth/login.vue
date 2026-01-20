@@ -3,25 +3,25 @@ import SvgIcon from "~/components/common/SvgIcon.vue";
 import BaseButton from "~/components/ui/BaseButton.vue";
 import BaseTextInput from "~/components/ui/BaseTextInput.vue";
 import {type LoginForm, loginSchema, parseZodErrors} from '@@/shared/validation/auth.schema'
-import type { ZodError } from 'zod'
+import Toast from "~/components/common/Toast.vue";
 
-const localePath = useLocalePath()
-const { t } = useI18n()
+
 definePageMeta({
   layout: 'auth'
 })
 
+const localePath = useLocalePath()
+const loading = ref(false)
+const {t} = useI18n()
 
+const toastStore = useToastStore()
 
 const loginData = reactive<{ email: string, password: string }>({
   email: '',
   password: '',
 })
 
-// const errors = ref<{ email: string, password: string }>({
-//   email: '',
-//   password: '',
-// })
+
 const errors = ref<Record<string, string>>({})
 
 
@@ -44,6 +44,7 @@ function validate() {
   errors.value = {}
   return true
 }
+
 const validateField = (field: keyof LoginForm) => {
 
   const result = loginSchema.safeParse(loginData)
@@ -60,17 +61,38 @@ const validateField = (field: keyof LoginForm) => {
   }
 }
 
-const submit = () => {
-
+async function onLogin() {
   if (!validate()) return
 
-  // запрос на сервер
+  try {
+    loading.value = true
+    const response = await $fetch('/api/auth/login', {
+      method: 'POST',
+      body: {
+        email: loginData.email,
+        password: loginData.password
+      }
+    })
+
+    if (!response.success) {
+      throw new Error("login failed")
+    }
+
+
+    navigateTo('/')
+
+  } catch (e) {
+
+    toastStore.show(e.statusMessage, 'error', 4000)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
 <template>
-  <form @submit="submit" class="login-form">
-    <SvgIcon name="logo" width="161" height="46" class="text-primary hover:text-secondary"/>
+  <form @submit="onLogin" class="login-form">
+    <SvgIcon name="logo" width="161" height="46" class="login-form__login-icon"/>
     <h1 class="login-form__title">{{ $t('authorization') }}</h1>
 
     <div class="login-form__btn-wrapper">
@@ -86,6 +108,17 @@ const submit = () => {
       </NuxtLink>
     </div>
 
+    <div class="login-form__social-wrapper">
+      <BaseButton variant="social-login" class="login-form__social-btn">
+        <SvgIcon name="google" width="20" height="20" class="login-form__social-icon"/>
+        {{ $t('loginWithGoogle') }}
+      </BaseButton>
+      <BaseButton variant="social-login" class="login-form__social-btn">
+        <SvgIcon name="github" width="20" height="20" class="login-form__social-icon"/>
+        {{ $t('loginWithGitHub') }}
+      </BaseButton>
+    </div>
+
     <BaseTextInput
         @click.prevent=""
         v-model="loginData.email"
@@ -94,7 +127,9 @@ const submit = () => {
         type="email"
         fullWidth
         @blur="validateField('email')"
+        @input="errors.email? validateField('password'): null"
         :error="errors.email"
+        class="login-form__email-input"
     />
 
     <BaseTextInput
@@ -104,9 +139,11 @@ const submit = () => {
         :placeholder="$t('placeholders.password')"
         :error="errors.password"
         @blur="validateField('password')"
+        @input="errors.password? validateField('password'): null"
         fullWidth
+        class="login-form__password-input"
     />
-    <BaseButton @click="submit" type="submit" variant="primary" full-width>
+    <BaseButton @click="onLogin" type="submit" variant="primary" full-width>
       {{ $t('submit') }}
     </BaseButton>
 
@@ -115,14 +152,73 @@ const submit = () => {
         {{ $t('resetPassword') }}
       </p>
 
-      <NuxtLink :to="localePath('/auth/recover-password')">
+      <NuxtLink class="login-form__reset-password-link" :to="localePath('/auth/recover-password')">
         {{ $t('resetPasswordLink') }}
       </NuxtLink>
     </div>
   </form>
-
+  <Toast />
 </template>
 
 <style lang="scss">
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  max-width: 500px;
+  background: var(--bagckground-card);
+  border-radius: 15px;
+  margin-inline: auto;
+  margin-top: 10vh;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__btn-wrapper {
+    border-radius: 12px;
+    padding: 7px 8px;
+    background: var(--frames);
+    margin-bottom: 20px;
+  }
+
+  &__social-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  &__email-input {
+    margin-bottom: 10px;
+  }
+
+  &__password-input {
+    margin-bottom: 20px;
+  }
+
+  &__reset-password-wrapper {
+    display: flex;
+    gap: 8px;
+    line-height: 1.5;
+    color: var(--secondary);
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+
+  &__reset-password-link {
+    line-height: 1.5;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    color: var(--color-3);
+  }
+
+  &__social-icon {
+    margin-right: 8px;
+  }
+}
 
 </style>

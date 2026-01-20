@@ -1,12 +1,8 @@
-import {z} from 'zod/v4'
+import {loginSchema} from "@@/shared/validation/auth.schema"
 
 
 
 
-const loginSchema = z.object({
-    email: z.email('Invalid email'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-})
 
 export default defineEventHandler(async (event) => {
     const body = await readValidatedBody(event, loginSchema.parse)

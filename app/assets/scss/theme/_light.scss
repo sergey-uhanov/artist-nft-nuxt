@@ -1,28 +1,50 @@
 :root[data-theme='light'] {
 
-  --color-bg: #ffffff;
-  --color-text: #0f172a;
-
+  --color-bg: #f5f6f8;
+  --color-text: #0e0e0e;
 
   --color-primary: #4f46e5;
 
-
-  --background: #f8fafc;
-  --frame-2: #eef2f7;
-  --frames: #e5e7eb;
-
-
+  --background: #ffffff;
+  --secondary: #4b5563;
   --text: #0f172a;
-  --secondary: #475569;
 
+  --color-1: #4f46e5;
+  --color-2: #7c5cff;
+  --color-3: #5b7cff;
 
-  --color-1: #4338ca;
-  --color-2: #6366f1;
-  --color-3: #93c5fd;
-
-
+  --frames: #e5e7eb;
+  --frame-2: #d1d5db;
   --stroke: #cbd5e1;
 
   --secondary-green: #4ade80;
-  --10-secondary: rgba(74, 222, 128, 0.12);
+  --10-secondary: rgba(74, 222, 128, 0.15);
+
+  --background-primary-button: linear-gradient(
+                  130deg,
+                  #5bbcff 0%,
+                  #bfa6ff 99.47%
+  );
+
+  --background-secondary-button: linear-gradient(
+                  130deg,
+                  rgba(91, 188, 255, 0.15) 0%,
+                  rgba(191, 166, 255, 0.15) 99.47%
+  );
+
+  --background-secondary-button-hover: linear-gradient(
+                  130deg,
+                  rgba(91, 188, 255, 0.25) 0%,
+                  rgba(191, 166, 255, 0.25) 99.47%
+  );
+
+  --text-secondary-button: linear-gradient(
+                  130deg,
+                  #4f46e5 0%,
+                  #7c5cff 50%,
+                  #4f46e5 99%
+  );
+
+  --danger: #dc2626;
+  --bagckground-card: rgba(71, 188, 255, 0.15);
 }
