@@ -384,7 +384,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  VerifyToken: 'VerifyToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -400,7 +401,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user"
+    modelProps: "user" | "verifyToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -478,6 +479,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VerifyToken: {
+      payload: Prisma.$VerifyTokenPayload<ExtArgs>
+      fields: Prisma.VerifyTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VerifyTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VerifyTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.VerifyTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VerifyTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>
+        }
+        findMany: {
+          args: Prisma.VerifyTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>[]
+        }
+        create: {
+          args: Prisma.VerifyTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>
+        }
+        createMany: {
+          args: Prisma.VerifyTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VerifyTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.VerifyTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>
+        }
+        update: {
+          args: Prisma.VerifyTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.VerifyTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VerifyTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VerifyTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.VerifyTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifyTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.VerifyTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVerifyToken>
+        }
+        groupBy: {
+          args: Prisma.VerifyTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VerifyTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VerifyTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VerifyTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -522,12 +597,23 @@ export const UserScalarFieldEnum = {
   email: 'email',
   role: 'role',
   name: 'name',
+  password: 'password',
+  emailVerified: 'emailVerified',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  password: 'password'
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const VerifyTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  expiresAt: 'expiresAt'
+} as const
+
+export type VerifyTokenScalarFieldEnum = (typeof VerifyTokenScalarFieldEnum)[keyof typeof VerifyTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -591,6 +677,13 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -717,6 +810,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  verifyToken?: Prisma.VerifyTokenOmit
 }
 
 /* Types for Logging */

@@ -17,6 +17,7 @@
     "@prisma/client": "^7.2.0",
     "eslint": "^9.39.2",
     "nanoid": "^5.1.6",
+    "nodemailer": "^7.0.12",
     "nuxt": "^4.2.2",
     "nuxt-auth-utils": "^0.5.26",
     "pg": "^8.16.3",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^11.0.3",
+    "@types/nodemailer": "^7.0.5",
     "@types/pg": "^8.16.0",
     "dotenv": "^17.2.3",
     "prisma": "^7.2.0",

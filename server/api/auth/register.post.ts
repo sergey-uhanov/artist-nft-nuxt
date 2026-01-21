@@ -1,17 +1,14 @@
-import {z} from 'zod/v4'
 import {regSchema} from "#shared/validation/registration.schema";
+import {nanoid} from "nanoid";
+import {sendVerificationEmail} from '@@/server/email/sendVerificationEmail'
 
-const registerSchema = z.object({
-    email: z.email('Invalid email'),
-    name: z.string().min(1, 'Name is required'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
-})
 
 export default defineEventHandler(async (event) => {
 
     const body = await readValidatedBody(event, regSchema.parse)
 
     const hashedPassword = await hashPassword(body.password)
+    const params = getQuery(event)
 
 
     const user = await prisma.user.create({
@@ -23,14 +20,19 @@ export default defineEventHandler(async (event) => {
         },
     })
 
+    const token = nanoid(48);
+    const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24h
 
-    await setUserSession(event,{
-        user:{
-            id: user.id,
-            name: user.name
-        },
-        lastLoggedIn: new Date(),
-    })
+    await prisma.verifyToken.create({
+        data: {
+            userId: user.id,
+            token,
+            expiresAt
+        }
+    });
+
+    await sendVerificationEmail(body.email, token, params.locale);
+
 
     return {success: true}
 })

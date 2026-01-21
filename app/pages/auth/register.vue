@@ -15,7 +15,8 @@ definePageMeta({
 
 const localePath = useLocalePath()
 const loading = ref(false)
-const {t} = useI18n()
+const {t, locale} = useI18n()
+
 
 const toastStore = useToastStore()
 
@@ -73,12 +74,11 @@ const validateField = (field: keyof RegForm) => {
 
 async function onReg() {
 
-  console.log(regData)
   if (!validate()) return
 
   try {
     loading.value = true
-     await $fetch('/api/auth/register', {
+     await $fetch(`/api/auth/register?locale=${locale.value}`, {
       method: 'POST',
       body: regData
     })
