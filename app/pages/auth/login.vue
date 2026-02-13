@@ -2,8 +2,8 @@
 import SvgIcon from "~/components/common/SvgIcon.vue";
 import BaseButton from "~/components/ui/BaseButton.vue";
 import BaseTextInput from "~/components/ui/BaseTextInput.vue";
-import {type LoginForm, loginSchema, parseZodErrors} from '@@/shared/validation/auth.schema'
-import Toast from "~/components/common/Toast.vue";
+import {type LoginForm, loginSchema, parseZodErrors} from '~~/shared/validation/auth.schema'
+
 import type {NuxtError} from "#app";
 
 
@@ -74,8 +74,7 @@ async function onLogin() {
         password: loginData.password
       }
     })
-
-    navigateTo('/')
+    navigateTo(`/personal-account/${response.role.toLowerCase()}`)
 
   } catch (e) {
 
@@ -163,7 +162,6 @@ async function onLogin() {
         </NuxtLink>
       </div>
     </form>
-    <Toast/>
   </div>
 </template>
 

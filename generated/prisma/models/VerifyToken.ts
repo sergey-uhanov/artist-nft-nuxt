@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model VerifyToken
@@ -20,32 +20,20 @@ export type VerifyTokenModel = runtime.Types.Result.DefaultSelection<Prisma.$Ver
 
 export type AggregateVerifyToken = {
   _count: VerifyTokenCountAggregateOutputType | null
-  _avg: VerifyTokenAvgAggregateOutputType | null
-  _sum: VerifyTokenSumAggregateOutputType | null
   _min: VerifyTokenMinAggregateOutputType | null
   _max: VerifyTokenMaxAggregateOutputType | null
 }
 
-export type VerifyTokenAvgAggregateOutputType = {
-  id: number | null
-  userId: number | null
-}
-
-export type VerifyTokenSumAggregateOutputType = {
-  id: number | null
-  userId: number | null
-}
-
 export type VerifyTokenMinAggregateOutputType = {
-  id: number | null
-  userId: number | null
+  id: string | null
+  userId: string | null
   token: string | null
   expiresAt: Date | null
 }
 
 export type VerifyTokenMaxAggregateOutputType = {
-  id: number | null
-  userId: number | null
+  id: string | null
+  userId: string | null
   token: string | null
   expiresAt: Date | null
 }
@@ -58,16 +46,6 @@ export type VerifyTokenCountAggregateOutputType = {
   _all: number
 }
 
-
-export type VerifyTokenAvgAggregateInputType = {
-  id?: true
-  userId?: true
-}
-
-export type VerifyTokenSumAggregateInputType = {
-  id?: true
-  userId?: true
-}
 
 export type VerifyTokenMinAggregateInputType = {
   id?: true
@@ -129,18 +107,6 @@ export type VerifyTokenAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: VerifyTokenAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: VerifyTokenSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: VerifyTokenMinAggregateInputType
@@ -171,20 +137,16 @@ export type VerifyTokenGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: VerifyTokenCountAggregateInputType | true
-  _avg?: VerifyTokenAvgAggregateInputType
-  _sum?: VerifyTokenSumAggregateInputType
   _min?: VerifyTokenMinAggregateInputType
   _max?: VerifyTokenMaxAggregateInputType
 }
 
 export type VerifyTokenGroupByOutputType = {
-  id: number
-  userId: number
+  id: string
+  userId: string
   token: string
   expiresAt: Date
   _count: VerifyTokenCountAggregateOutputType | null
-  _avg: VerifyTokenAvgAggregateOutputType | null
-  _sum: VerifyTokenSumAggregateOutputType | null
   _min: VerifyTokenMinAggregateOutputType | null
   _max: VerifyTokenMaxAggregateOutputType | null
 }
@@ -208,8 +170,8 @@ export type VerifyTokenWhereInput = {
   AND?: Prisma.VerifyTokenWhereInput | Prisma.VerifyTokenWhereInput[]
   OR?: Prisma.VerifyTokenWhereInput[]
   NOT?: Prisma.VerifyTokenWhereInput | Prisma.VerifyTokenWhereInput[]
-  id?: Prisma.IntFilter<"VerifyToken"> | number
-  userId?: Prisma.IntFilter<"VerifyToken"> | number
+  id?: Prisma.UuidFilter<"VerifyToken"> | string
+  userId?: Prisma.UuidFilter<"VerifyToken"> | string
   token?: Prisma.StringFilter<"VerifyToken"> | string
   expiresAt?: Prisma.DateTimeFilter<"VerifyToken"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -224,8 +186,8 @@ export type VerifyTokenOrderByWithRelationInput = {
 }
 
 export type VerifyTokenWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
-  userId?: number
+  id?: string
+  userId?: string
   token?: string
   AND?: Prisma.VerifyTokenWhereInput | Prisma.VerifyTokenWhereInput[]
   OR?: Prisma.VerifyTokenWhereInput[]
@@ -240,63 +202,64 @@ export type VerifyTokenOrderByWithAggregationInput = {
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   _count?: Prisma.VerifyTokenCountOrderByAggregateInput
-  _avg?: Prisma.VerifyTokenAvgOrderByAggregateInput
   _max?: Prisma.VerifyTokenMaxOrderByAggregateInput
   _min?: Prisma.VerifyTokenMinOrderByAggregateInput
-  _sum?: Prisma.VerifyTokenSumOrderByAggregateInput
 }
 
 export type VerifyTokenScalarWhereWithAggregatesInput = {
   AND?: Prisma.VerifyTokenScalarWhereWithAggregatesInput | Prisma.VerifyTokenScalarWhereWithAggregatesInput[]
   OR?: Prisma.VerifyTokenScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VerifyTokenScalarWhereWithAggregatesInput | Prisma.VerifyTokenScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"VerifyToken"> | number
-  userId?: Prisma.IntWithAggregatesFilter<"VerifyToken"> | number
+  id?: Prisma.UuidWithAggregatesFilter<"VerifyToken"> | string
+  userId?: Prisma.UuidWithAggregatesFilter<"VerifyToken"> | string
   token?: Prisma.StringWithAggregatesFilter<"VerifyToken"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"VerifyToken"> | Date | string
 }
 
 export type VerifyTokenCreateInput = {
+  id?: string
   token: string
   expiresAt: Date | string
   user: Prisma.UserCreateNestedOneWithoutVerifyTokenInput
 }
 
 export type VerifyTokenUncheckedCreateInput = {
-  id?: number
-  userId: number
+  id?: string
+  userId: string
   token: string
   expiresAt: Date | string
 }
 
 export type VerifyTokenUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutVerifyTokenNestedInput
 }
 
 export type VerifyTokenUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerifyTokenCreateManyInput = {
-  id?: number
-  userId: number
+  id?: string
+  userId: string
   token: string
   expiresAt: Date | string
 }
 
 export type VerifyTokenUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerifyTokenUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -313,11 +276,6 @@ export type VerifyTokenCountOrderByAggregateInput = {
   expiresAt?: Prisma.SortOrder
 }
 
-export type VerifyTokenAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-}
-
 export type VerifyTokenMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -330,11 +288,6 @@ export type VerifyTokenMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   token?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
-}
-
-export type VerifyTokenSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
 }
 
 export type VerifyTokenCreateNestedOneWithoutUserInput = {
@@ -370,12 +323,13 @@ export type VerifyTokenUncheckedUpdateOneWithoutUserNestedInput = {
 }
 
 export type VerifyTokenCreateWithoutUserInput = {
+  id?: string
   token: string
   expiresAt: Date | string
 }
 
 export type VerifyTokenUncheckedCreateWithoutUserInput = {
-  id?: number
+  id?: string
   token: string
   expiresAt: Date | string
 }
@@ -397,12 +351,13 @@ export type VerifyTokenUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type VerifyTokenUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VerifyTokenUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -457,8 +412,8 @@ export type $VerifyTokenPayload<ExtArgs extends runtime.Types.Extensions.Interna
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
-    userId: number
+    id: string
+    userId: string
     token: string
     expiresAt: Date
   }, ExtArgs["result"]["verifyToken"]>
@@ -885,8 +840,8 @@ export interface Prisma__VerifyTokenClient<T, Null = never, ExtArgs extends runt
  * Fields of the VerifyToken model
  */
 export interface VerifyTokenFieldRefs {
-  readonly id: Prisma.FieldRef<"VerifyToken", 'Int'>
-  readonly userId: Prisma.FieldRef<"VerifyToken", 'Int'>
+  readonly id: Prisma.FieldRef<"VerifyToken", 'String'>
+  readonly userId: Prisma.FieldRef<"VerifyToken", 'String'>
   readonly token: Prisma.FieldRef<"VerifyToken", 'String'>
   readonly expiresAt: Prisma.FieldRef<"VerifyToken", 'DateTime'>
 }

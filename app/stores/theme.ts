@@ -12,7 +12,7 @@ export const useThemeStore = defineStore('theme', {
         resolvedTheme: (state): 'light' | 'dark' => {
             if (state.theme !== 'system') return state.theme
 
-            if (process.client) {
+            if (import.meta.client) {
                 return window.matchMedia('(prefers-color-scheme: dark)').matches
                     ? 'dark'
                     : 'light'

@@ -1,6 +1,6 @@
 import {regSchema} from "#shared/validation/registration.schema";
 import {nanoid} from "nanoid";
-import {sendVerificationEmail} from '@@/server/email/sendVerificationEmail'
+import {sendVerificationEmail} from '~~/server/email/sendVerificationEmail'
 
 
 export default defineEventHandler(async (event) => {
@@ -10,15 +10,38 @@ export default defineEventHandler(async (event) => {
     const hashedPassword = await hashPassword(body.password)
     const params = getQuery(event)
 
-
-    const user = await prisma.user.create({
-        data: {
-            name: body.name,
-            email: body.email,
-            password: hashedPassword,
-            role: body.role,
-        },
+    let user = await prisma.user.findUnique({
+        where: {
+            email: body.email
+        }
     })
+
+    if (!user) {
+        user = await prisma.user.create({
+            data: {
+                name: body.name,
+                email: body.email,
+                password: hashedPassword,
+                role: body.role,
+            },
+        })
+
+    }
+
+    if (!user.password) {
+        await prisma.user.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword,
+                    role: body.role,
+                    emailVerified: false,
+                    name: body.name,
+                }
+            },
+        )
+    }
 
     const token = nanoid(48);
     const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24h
@@ -32,7 +55,5 @@ export default defineEventHandler(async (event) => {
     });
 
     await sendVerificationEmail(body.email, token, params.locale);
-
-
     return {success: true}
 })

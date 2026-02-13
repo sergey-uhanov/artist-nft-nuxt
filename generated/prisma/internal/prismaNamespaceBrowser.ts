@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.js'
-export type * from './prismaNamespace.js'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  VerifyToken: 'VerifyToken'
+  VerifyToken: 'VerifyToken',
+  Thread: 'Thread',
+  ThreadMember: 'ThreadMember',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -77,6 +80,7 @@ export const UserScalarFieldEnum = {
   role: 'role',
   name: 'name',
   password: 'password',
+  img: 'img',
   emailVerified: 'emailVerified',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -95,6 +99,39 @@ export const VerifyTokenScalarFieldEnum = {
 export type VerifyTokenScalarFieldEnum = (typeof VerifyTokenScalarFieldEnum)[keyof typeof VerifyTokenScalarFieldEnum]
 
 
+export const ThreadScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  createdBy: 'createdBy',
+  img: 'img',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ThreadScalarFieldEnum = (typeof ThreadScalarFieldEnum)[keyof typeof ThreadScalarFieldEnum]
+
+
+export const ThreadMemberScalarFieldEnum = {
+  threadId: 'threadId',
+  userId: 'userId',
+  readAt: 'readAt'
+} as const
+
+export type ThreadMemberScalarFieldEnum = (typeof ThreadMemberScalarFieldEnum)[keyof typeof ThreadMemberScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  threadId: 'threadId',
+  senderId: 'senderId',
+  body: 'body',
+  attachments: 'attachments',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -103,10 +140,35 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

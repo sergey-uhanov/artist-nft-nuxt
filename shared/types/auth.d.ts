@@ -1,17 +1,17 @@
-// shared/types/auth.d.ts
-declare module '#auth-utils' {
-    interface User {
-        id: number,
-        name: string,
+import type {Role} from '~~/generated/prisma/enums'
 
+declare module '#auth-utils' {
+
+
+    interface User {
+        id: uuid
+        name: string
+        role: Role
+        img: string | null
     }
 
     interface UserSession {
-        user: {
-            id: number
-            name: string,
-
-        }
+        user: User
     }
 
     interface SecureSessionData {

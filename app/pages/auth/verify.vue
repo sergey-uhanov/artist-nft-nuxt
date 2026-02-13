@@ -1,25 +1,27 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import {onMounted, ref} from 'vue';
+import {useRoute} from 'vue-router';
 
 const route = useRoute();
-const router = useRouter();
+// const router = useRouter();
 const status = ref<'pending' | 'success' | 'expired' | 'invalid'>('pending');
 const message = ref('');
+const {t} = useI18n()
+const localePath = useLocalePath()
 
 onMounted(async () => {
-  const token = (route.query.token as string) || '';
+  const token = route.query.token
 
   if (!token) {
     status.value = 'invalid';
-    message.value = 'Токен отсутствует.';
+    message.value = t('tokenNotFound');
     return;
   }
 
   try {
     await $fetch('/api/auth/verify', {
       method: 'POST',
-      body: { token }
+      body: {token}
     });
     status.value = 'success';
     message.value = 'Ваша почта успешно подтверждена.';
@@ -27,13 +29,13 @@ onMounted(async () => {
     const code = err?.data?.statusCode;
     if (code === 410) {
       status.value = 'expired';
-      message.value = 'Срок действия ссылки истёк. <a href="/resend">Отправить заново</a>';
+      message.value = t('tokenExpired');
     } else if (code === 404) {
       status.value = 'invalid';
-      message.value = 'Неверный токен.';
+      message.value = t('invalidToken');
     } else {
       status.value = 'invalid';
-      message.value = 'Произошла ошибка. Попробуйте ещё.';
+      message.value = t('errorVerified');
     }
   }
 });
@@ -41,24 +43,39 @@ onMounted(async () => {
 
 <template>
   <section class="verify-page">
-    <div v-if="status === 'pending'">Проверка…</div>
+    <div v-if="status === 'pending'">{{ t('checking') }}</div>
 
     <div v-else-if="status === 'success'" class="success">
-      <h1>Успех!</h1>
-      <p v-html="message"></p>
-      <NuxtLink to="/login">Войти</NuxtLink>
+      <h1>{{ t('success') }}</h1>
+      <p>{{ message }}</p>
+      <NuxtLink :to="localePath('/auth/login')" class="link-login">{{ t('login') }}</NuxtLink>
     </div>
 
     <div v-else class="error">
-      <h1>Не удалось подтвердить почту</h1>
+      <h1>{{ t('notVerified') }}</h1>
       <p v-html="message"></p>
-      <NuxtLink to="/resend">Отправить ссылку повторно</NuxtLink>
     </div>
   </section>
 </template>
 
-<style scoped>
-.verify-page { max-width: 480px; margin: auto; padding: 2rem; }
-.success { color: green; }
-.error { color: red; }
+<style lang="scss">
+.verify-page {
+  max-width: 480px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.success {
+  color: var(--success);
+}
+
+.error {
+  color: var(--danger);
+}
+
+.link-login{
+  font-size: 1.2rem;
+  color: var(--color-text);
+  text-decoration: underline;
+}
 </style>

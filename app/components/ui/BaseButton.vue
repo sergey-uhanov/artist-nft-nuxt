@@ -118,6 +118,7 @@ const buttonClasses = computed(() => [
 
     &:hover:not(.btn--disabled) {
       background: var(--10-secondary);
+      transform: translateY(-1px);
     }
   }
 }

@@ -8,20 +8,24 @@ datasource db {
 }
 
 model User {
-  id            Int          @id @default(autoincrement())
-  email         String       @unique
-  role          Role         @default(CUSTOMER)
+  id            String         @id @default(uuid()) @db.Uuid
+  email         String         @unique
+  role          Role           @default(CUSTOMER)
   name          String
-  password      String
-  emailVerified Boolean      @default(false)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  password      String?
+  img           String?
+  emailVerified Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   verifyToken   VerifyToken?
+  threadMembers ThreadMember[]
+  messages      Message[]
+  threads       Thread[]
 }
 
 model VerifyToken {
-  id        Int      @id @default(autoincrement())
-  userId    Int      @unique
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @unique @db.Uuid
   token     String   @unique
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -31,4 +35,47 @@ enum Role {
   CUSTOMER
   ADMIN
   ARTIST
+}
+
+model Thread {
+  id        String  @id @default(uuid()) @db.Uuid
+  title     String
+  createdBy String  @db.Uuid
+  img       String?
+  user      User    @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  ThreadMember[]
+  messages Message[]
+}
+
+model ThreadMember {
+  threadId String @db.Uuid
+  userId   String @db.Uuid
+
+  readAt DateTime? @map("read_at")
+
+  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([threadId, userId])
+  @@map("thread_members")
+}
+
+model Message {
+  id       String @id @default(uuid()) @db.Uuid
+  threadId String @db.Uuid
+  senderId String @db.Uuid
+
+  body        String?
+  attachments Json?
+
+  createdAt DateTime @default(now())
+
+  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([threadId, createdAt(sort: Desc)])
 }

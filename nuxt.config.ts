@@ -2,6 +2,7 @@ import {createSvgIconsPlugin} from 'vite-plugin-svg-icons'
 import * as path from "node:path";
 
 export default defineNuxtConfig({
+
     app: {
         pageTransition: {
             name: 'page',
@@ -10,23 +11,25 @@ export default defineNuxtConfig({
     },
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
-    modules: ['@nuxt/eslint', 'nuxt-auth-utils', '@nuxtjs/i18n', '@pinia/nuxt',],
+    modules: ['@nuxt/eslint', 'nuxt-auth-utils', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxt/image', '@nuxt/image','@vueuse/nuxt'],
     css: ['~/assets/scss/main.scss'],
     vite: {
         css: {
             preprocessorOptions: {
                 scss: {
                     additionalData: `
-            @use "@/assets/scss/abstracts/variables" as *;
-            @use "@/assets/scss/abstracts/mixins" as *;
+            @use "~/assets/scss/abstracts/variables" as *;
+            @use "~/assets/scss/abstracts/media" as *;
           `
                 }
             }
         },
         plugins: [
             createSvgIconsPlugin({
-                iconDirs: [path.resolve(process.cwd(), 'app/assets/icons')],
-                symbolId: 'icon-[name]',
+                iconDirs: [
+                    path.resolve(process.cwd(), 'app/assets/icons'),
+                    path.resolve(process.cwd(), 'app/assets/icons/account')],
+                symbolId: 'icon-[dir]-[name]',
                 svgoOptions: true
             })
         ]
@@ -37,6 +40,9 @@ export default defineNuxtConfig({
         },
     },
     runtimeConfig: {
+        public: {
+            apiBase: 'http://localhost:3000',
+        },
         oauth: {
             github: {
                 clientId: process.env.GITHUB_CLIENT_ID,
@@ -63,10 +69,16 @@ export default defineNuxtConfig({
             {code: 'ua', file: 'ua/common.json', language: 'Українська'},
             {code: 'en', file: 'en/auth.json', language: 'English'},
             {code: 'ru', file: 'ru/auth.json', language: 'Русский'},
-            {code: 'ua', file: 'ua/auth.json', language: 'Українська'}
+            {code: 'ua', file: 'ua/auth.json', language: 'Українська'},
+            {code: 'en', file: 'en/account.json', language: 'English'},
+            {code: 'ru', file: 'ru/account.json', language: 'Русский'},
+            {code: 'ua', file: 'ua/account.json', language: 'Українська'}
         ]
     },
     nitro: {
+        experimental: {
+            websocket: true
+        },
         storage: {
             session: {
                 driver: 'redis',

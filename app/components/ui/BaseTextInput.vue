@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import {computed, ref} from 'vue'
 
 interface Props {
   modelValue: string
@@ -92,18 +92,30 @@ const togglePasswordVisibility = () => {
     >
       {{ error }}
     </p>
+    <div v-if="$slots.icon" class="input__icon">
+      <slot name="icon" />
+    </div>
+
   </div>
 </template>
 
-<style lang="scss" >
+<style lang="scss">
 .input {
   display: inline-flex;
   flex-direction: column;
   gap: 0.35rem;
   width: fit-content;
+  position: relative;
 
   &--full {
     width: 100%;
+  }
+
+  &__icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &__label {
@@ -129,10 +141,9 @@ const togglePasswordVisibility = () => {
     font-size: 0.9rem;
     color: var(--color-text);
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
+    transition: border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 
     &::placeholder {
       color: var(--secondary);
@@ -182,9 +193,8 @@ const togglePasswordVisibility = () => {
 
     &:focus-visible {
       outline: none;
-      box-shadow:
-          0 0 0 2px var(--color-bg),
-          0 0 0 4px var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-bg),
+      0 0 0 4px var(--color-primary);
       border-radius: 0.4rem;
     }
   }

@@ -1,5 +1,6 @@
 @use 'abstracts/variables';
 @use 'abstracts/mixins';
+@use 'abstracts/media';
 @use 'base/reset';
 @use 'base/fonts';
 @use 'theme';
@@ -27,3 +28,40 @@ body {
   opacity: 0;
   filter: blur(1rem);
 }
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-text) var(--background);
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  width: 2px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 1px;
+  background-color: var(--background);
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color:var(--background);
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: var(--background);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 1px;
+  background-color: var(--color-text);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-text);
+}
+

@@ -2,20 +2,18 @@
 
  import Header from "~/components/layouts/Header.vue";
 
-const session = useUserSession()
-const localePath = useLocalePath()
-const {locales, setLocale} = useI18n()
 
-async function logout() {
-  await session.clear()
-  await navigateTo(localePath('/auth/login'), {replace: true})
-}
+
+
+
 </script>
 
 <template>
- <Header/>
+ <div>
+   <Header/>
 
-  <slot/>
+   <slot/>
+ </div>
 </template>
 
 <style >

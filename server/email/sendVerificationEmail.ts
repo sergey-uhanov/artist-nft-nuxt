@@ -12,7 +12,7 @@ export async function sendVerificationEmail(email: string, token: string, locale
         }
     });
 
-    const link = `${process.env.NUXT_BASE_URL}verify?token=${token}`;
+    const link = `${process.env.NUXT_BASE_URL}auth/verify?token=${token}`;
 
 
     await transporter.sendMail({

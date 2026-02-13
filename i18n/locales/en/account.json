@@ -1,0 +1,18 @@
+{
+  "messages": "Massages",
+  "orders": "Orders",
+  "nftOrders": "NFT Orders",
+  "workers": "Workers",
+  "statistics": "Statistics",
+  "chatList": "My chat list",
+  "createTitle": "Create a new chat",
+  "chat": {
+    "single": "Private chat",
+    "group": "Group chat",
+    "select": "Select"
+  },
+  "create": "Create",
+  "loading": "Loading...",
+  "list": "Chat list",
+  "newChat": "Create chat"
+}

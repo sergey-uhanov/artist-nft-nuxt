@@ -1,14 +1,16 @@
 <script setup>
 import 'virtual:svg-icons-register'
+import Toast from "~/components/common/Toast.vue";
 
 </script>
 
 <template>
   <NuxtLayout>
     <NuxtPage/>
-
+    <Toast/>
   </NuxtLayout>
 </template>
+
 <style lang="scss">
 .page-enter-active,
 .page-leave-active {

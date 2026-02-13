@@ -2,7 +2,7 @@
 import SvgIcon from "~/components/common/SvgIcon.vue";
 import BaseButton from "~/components/ui/BaseButton.vue";
 import BaseTextInput from "~/components/ui/BaseTextInput.vue";
-import {parseZodErrors} from '@@/shared/validation/auth.schema'
+import {parseZodErrors} from '~~/shared/validation/auth.schema'
 import Toast from "~/components/common/Toast.vue";
 import type {NuxtError} from "#app";
 import BaseRadioGroup from "~/components/ui/BaseRadioGroup.vue";
@@ -83,7 +83,7 @@ async function onReg() {
       body: regData
     })
 
-    navigateTo('/')
+    navigateTo(localePath('/auth/confirmation-instructions'))
 
   } catch (e) {
 

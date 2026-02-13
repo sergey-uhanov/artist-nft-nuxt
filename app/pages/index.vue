@@ -2,11 +2,14 @@
 definePageMeta({
   middleware:['auth'],
 })
+
+
+
+
 </script>
 
 <template>
-<h1>Protected page</h1>
-
+<p>Home page</p>
 </template>
 
 <style lang="scss">

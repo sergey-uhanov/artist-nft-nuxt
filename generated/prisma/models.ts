@@ -8,6 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User.js'
-export type * from './models/VerifyToken.js'
-export type * from './commonInputTypes.js'
+export type * from './models/User'
+export type * from './models/VerifyToken'
+export type * from './models/Thread'
+export type * from './models/ThreadMember'
+export type * from './models/Message'
+export type * from './commonInputTypes'

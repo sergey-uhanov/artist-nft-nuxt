@@ -21,9 +21,6 @@ const onSelect = (value: string | number) => {
     emit('update:modelValue', value)
   }
 }
-
-const isChecked = (value: string | number) =>
-    computed(() => props.modelValue === value)
 </script>
 
 <template>
@@ -44,7 +41,7 @@ const isChecked = (value: string | number) =>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .radio-group {
   display: flex;
   gap: 0.75rem;

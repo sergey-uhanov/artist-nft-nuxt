@@ -15,8 +15,10 @@ export const useToastStore = defineStore('toast', {
     }),
     actions: {
         show(message: string, type: ToastType = 'success', duration = 3000) {
+            console.log('work')
             const id = Date.now() + Math.random()
             this.toasts.push({id, message, type, duration})
+            console.log(this.toasts)
             setTimeout(() => this.remove(id), duration)
         },
         remove(id: number) {

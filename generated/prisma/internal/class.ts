@@ -12,7 +12,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id            Int          @id @default(autoincrement())\n  email         String       @unique\n  role          Role         @default(CUSTOMER)\n  name          String\n  password      String\n  emailVerified Boolean      @default(false)\n  createdAt     DateTime     @default(now())\n  updatedAt     DateTime     @updatedAt\n  verifyToken   VerifyToken?\n}\n\nmodel VerifyToken {\n  id        Int      @id @default(autoincrement())\n  userId    Int      @unique\n  token     String   @unique\n  expiresAt DateTime\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nenum Role {\n  CUSTOMER\n  ADMIN\n  ARTIST\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id            String         @id @default(uuid()) @db.Uuid\n  email         String         @unique\n  role          Role           @default(CUSTOMER)\n  name          String\n  password      String?\n  img           String?\n  emailVerified Boolean        @default(false)\n  createdAt     DateTime       @default(now())\n  updatedAt     DateTime       @updatedAt\n  verifyToken   VerifyToken?\n  threadMembers ThreadMember[]\n  messages      Message[]\n  threads       Thread[]\n}\n\nmodel VerifyToken {\n  id        String   @id @default(uuid()) @db.Uuid\n  userId    String   @unique @db.Uuid\n  token     String   @unique\n  expiresAt DateTime\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n}\n\nenum Role {\n  CUSTOMER\n  ADMIN\n  ARTIST\n}\n\nmodel Thread {\n  id        String  @id @default(uuid()) @db.Uuid\n  title     String\n  createdBy String  @db.Uuid\n  img       String?\n  user      User    @relation(fields: [createdBy], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  members  ThreadMember[]\n  messages Message[]\n}\n\nmodel ThreadMember {\n  threadId String @db.Uuid\n  userId   String @db.Uuid\n\n  readAt DateTime? @map(\"read_at\")\n\n  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)\n  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@id([threadId, userId])\n  @@map(\"thread_members\")\n}\n\nmodel Message {\n  id       String @id @default(uuid()) @db.Uuid\n  threadId String @db.Uuid\n  senderId String @db.Uuid\n\n  body        String?\n  attachments Json?\n\n  createdAt DateTime @default(now())\n\n  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)\n  sender User   @relation(fields: [senderId], references: [id], onDelete: Cascade)\n\n  @@index([threadId, createdAt(sort: Desc)])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verifyToken\",\"kind\":\"object\",\"type\":\"VerifyToken\",\"relationName\":\"UserToVerifyToken\"}],\"dbName\":null},\"VerifyToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToVerifyToken\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"img\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"verifyToken\",\"kind\":\"object\",\"type\":\"VerifyToken\",\"relationName\":\"UserToVerifyToken\"},{\"name\":\"threadMembers\",\"kind\":\"object\",\"type\":\"ThreadMember\",\"relationName\":\"ThreadMemberToUser\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"Message\",\"relationName\":\"MessageToUser\"},{\"name\":\"threads\",\"kind\":\"object\",\"type\":\"Thread\",\"relationName\":\"ThreadToUser\"}],\"dbName\":null},\"VerifyToken\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToVerifyToken\"}],\"dbName\":null},\"Thread\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdBy\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"img\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ThreadToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"members\",\"kind\":\"object\",\"type\":\"ThreadMember\",\"relationName\":\"ThreadToThreadMember\"},{\"name\":\"messages\",\"kind\":\"object\",\"type\":\"Message\",\"relationName\":\"MessageToThread\"}],\"dbName\":null},\"ThreadMember\":{\"fields\":[{\"name\":\"threadId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"readAt\",\"kind\":\"scalar\",\"type\":\"DateTime\",\"dbName\":\"read_at\"},{\"name\":\"thread\",\"kind\":\"object\",\"type\":\"Thread\",\"relationName\":\"ThreadToThreadMember\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ThreadMemberToUser\"}],\"dbName\":\"thread_members\"},\"Message\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"threadId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"senderId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"body\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"attachments\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"thread\",\"kind\":\"object\",\"type\":\"Thread\",\"relationName\":\"MessageToThread\"},{\"name\":\"sender\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"MessageToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -193,6 +193,36 @@ export interface PrismaClient<
     * ```
     */
   get verifyToken(): Prisma.VerifyTokenDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.thread`: Exposes CRUD operations for the **Thread** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Threads
+    * const threads = await prisma.thread.findMany()
+    * ```
+    */
+  get thread(): Prisma.ThreadDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.threadMember`: Exposes CRUD operations for the **ThreadMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ThreadMembers
+    * const threadMembers = await prisma.threadMember.findMany()
+    * ```
+    */
+  get threadMember(): Prisma.ThreadMemberDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.message`: Exposes CRUD operations for the **Message** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Messages
+    * const messages = await prisma.message.findMany()
+    * ```
+    */
+  get message(): Prisma.MessageDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {
